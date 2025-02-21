@@ -26,7 +26,7 @@ services:
       - IGN_IP=slict
     volumes:
       - type: bind
-        source: topics.yaml
+        source: .topics.yaml
         target: /app/setup/topics_config.yaml
     # command: /bin/bash -c '. /opt/ros/noetic/setup.bash && . /opt/ros/foxy/setup.bash && ros2 run ros1_bridge dynamic_bridge --bridge-all-topics'
     command: /bin/bash -c '. /opt/ros/noetic/setup.bash && . /opt/ros/foxy/setup.bash && rosparam load /app/setup/topics_config.yaml && ros2 run ros1_bridge parameter_bridge '
