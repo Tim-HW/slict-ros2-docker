@@ -1,0 +1,10 @@
+topics:
+  -
+    topic: /livox/imu  # Topic name on both ROS 1 and ROS 2
+    type: sensor_msgs/msg/Imu  # Type of topic to bridge
+    queue_size: 100  # Queue size
+  -
+    topic: /livox/lidar  # Topic name on both ROS 1 and ROS 2
+    type: livox_ros_driver/CustomMsg/msg # Type of topic to bridge
+    queue_size: 100  # Queue size
+

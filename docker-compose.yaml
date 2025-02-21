@@ -1,0 +1,63 @@
+version: "3.2"
+
+networks:
+  ros:
+    driver: bridge
+
+services:
+  ros_bridge:
+    image: osrf/ros:foxy-ros1-bridge      
+    container_name: ros1_bridge
+    environment:
+      # - ROS_HOSTNAME=ros_bridge
+      - ROS_MASTER_URI=http://ros-master:11311
+      - IGN_IP=ros-master
+    volumes:
+      - type: bind
+        source: topics.yaml
+        target: /app/setup/topics_config.yaml
+    # command: /bin/bash -c '. /opt/ros/noetic/setup.bash && . /opt/ros/foxy/setup.bash && ros2 run ros1_bridge dynamic_bridge --bridge-all-topics'
+    command: /bin/bash -c '. /opt/ros/noetic/setup.bash && . /opt/ros/foxy/setup.bash && rosparam load /app/setup/topics_config.yaml && ros2 run ros1_bridge parameter_bridge '
+
+    networks:
+      - ros
+    depends_on:
+      - ros-master
+
+  controllers:
+      image: slictdocker:latest
+      build: .
+      container_name: slict
+      environment:
+        - ROS_MASTER_URI=http://ros-master:11311
+      privileged: true
+      networks: 
+        - ros
+      command: /bin/bash -c 'source /ws_slam/devel/setup.bash && roscore'
+      restart: on-failure
+      depends_on: 
+        - ros_bridge
+
+  imu:
+      image: gitlab.cylab.be:8081/rma-ras/robotniks/robotnik_controllers:0.0.3
+      container_name: robotnik_imu
+      environment:
+        # - ROS_PACKAGE_PATH=/app/src:/opt/ros/melodic/share
+        # - ROS_IP=127.0.0.2
+        - ROS_HOSTNAME=imu
+        - ROS_MASTER_URI=http://ros-master:11311
+      privileged: true
+      volumes:
+        - type: bind
+          source: /dev
+          target: /dev
+        - type: bind
+          source: ./setup
+          target: /app/setup
+      networks: 
+        - ros
+      command: /bin/bash -c 'source /app/devel/setup.bash && roslaunch robot_bringup myahrs.launch'
+      restart: on-failure
+      depends_on: 
+        - ros-master
+        - ros_bridge
