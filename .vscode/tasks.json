@@ -1,0 +1,14 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "ros",
+			"command": "ros2 bag play data/ --loop",
+			"label": "Rosbag",
+			"group": {
+				"kind": "build",
+
+			}
+		}
+	]
+}

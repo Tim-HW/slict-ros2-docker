@@ -16,6 +16,8 @@ services:
       networks:
         - ros
       restart: always
+      depends_on:
+       - ros_bag_reader
 
 
   ros_bridge:
@@ -26,13 +28,27 @@ services:
       - IGN_IP=slict
     volumes:
       - type: bind
-        source: .topics.yaml
+        source: topics.yaml
         target: /app/setup/topics_config.yaml
-    # command: /bin/bash -c '. /opt/ros/noetic/setup.bash && . /opt/ros/foxy/setup.bash && ros2 run ros1_bridge dynamic_bridge --bridge-all-topics'
-    command: /bin/bash -c '. /opt/ros/noetic/setup.bash && . /opt/ros/foxy/setup.bash && rosparam load /app/setup/topics_config.yaml && ros2 run ros1_bridge parameter_bridge '
+    command: /bin/bash -c '. /opt/ros/noetic/setup.bash && . /opt/ros/foxy/setup.bash && ros2 run ros1_bridge dynamic_bridge --bridge-all-topics'
+    #command: /bin/bash -c '. /opt/ros/noetic/setup.bash && . /ws_slam/devel/setup.bash  && . /opt/ros/foxy/setup.bash && rosparam load /app/setup/topics_config.yaml && ros2 run ros1_bridge parameter_bridge '
     networks:
       - ros
     depends_on: 
       - slict
+      - ros_bag_reader
 
+  ros_bag_reader:
+    image: osrf/ros:foxy-ros1-bridge 
+    container_name: ros2_bag_reader
+    environment:
+      - ROS_MASTER_URI=http://slict:11311
+      - IGN_IP=slict
+    volumes:
+      - type: bind
+        source: data
+        target: /data
+    command: /bin/bash -c ' . /opt/ros/foxy/setup.bash && ros2 bag play data --loop'
+    networks:
+      - ros
 

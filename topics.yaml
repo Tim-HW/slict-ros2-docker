@@ -5,6 +5,6 @@ topics:
     queue_size: 100  # Queue size
   -
     topic: /livox/lidar  # Topic name on both ROS 1 and ROS 2
-    type: livox_ros_driver/CustomMsg/msg # Type of topic to bridge
+    type: sensor_msgs/PointCloud2 # Type of topic to bridge
     queue_size: 100  # Queue size
 
