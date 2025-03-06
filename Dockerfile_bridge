@@ -1,0 +1,43 @@
+FROM ros:foxy-ros-base
+
+
+
+# Remove interactions
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt update
+
+RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+RUN apt install curl -y
+RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
+RUN apt update
+RUN apt install ros-noetic-ros-base -y
+
+    # Install dependancy
+RUN apt install ros-noetic-pcl-ros ros-noetic-tf2-sensor-msgs ros-noetic-image-transport python3-catkin-tools ros-noetic-tf-conversions -y 
+RUN apt install libtbb-dev -y 
+
+# Install Livox SDK2
+RUN git clone https://github.com/Livox-SDK/Livox-SDK2.git
+RUN cd Livox-SDK2 && mkdir build && cd build &&\
+cmake .. -DCMAKE_POLICY_VERSION_MINIMUM=3.5 &&\
+make -j9 &&\
+make install
+
+
+
+# Get all the packages
+RUN git clone https://github.com/Livox-SDK/livox_ros_driver2.git /ROS1/src/livox_ros_driver2   
+# Change the packages.xml from this repo to match ROS1
+RUN cd /ROS1/src/livox_ros_driver2 && mv package_ROS1.xml package.xml
+# Build it with all the necessary arguments
+RUN /bin/bash -c 'source /opt/ros/noetic/setup.bash && cd ROS1 && catkin_make -DROS_EDITION=ROS1 '
+
+# Install dependancy
+RUN apt install ros-foxy-pcl-ros ros-foxy-tf2-sensor-msgs ros-foxy-image-transport ros-foxy-cv-bridge -y 
+# Get all the packages
+RUN git clone https://github.com/Livox-SDK/livox_ros_driver2.git /ROS2/src/livox_ros_driver2   
+# Change the packages.xml from this repo to match ROS1
+RUN cd /ROS2/src/livox_ros_driver2 && mv package_ROS2.xml package.xml
+# Build it with all the necessary xarguments
+RUN /bin/bash -c 'source /opt/ros/foxy/setup.bash && cd ROS2 && colcon build --cmake-args -DROS_EDITION=ROS2 '
+
