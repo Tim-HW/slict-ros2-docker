@@ -50,3 +50,4 @@ COPY livox_ros_driver2/my_mapping_rules.yaml /ROS2/install/livox_ros_driver2/sha
 RUN git clone -b foxy https://github.com/ros2/ros1_bridge.git /bridge_ws/src/ros1_bridge
 # Build it from source to incorporate custom msg from livox (it takes few minutes)
 RUN /bin/bash -c 'source /opt/ros/foxy/setup.bash && source /opt/ros/noetic/setup.bash && source /ROS1/devel/setup.bash && source /ROS2/install/setup.bash && cd bridge_ws && colcon build --cmake-force-configure'
+

@@ -6,16 +6,19 @@ networks:
 
 services:
   ros-master:
-      image: slictdocker:latest
-      container_name: slict
-      environment:
-        - ROS_HOSTNAME=slict
-        - ROS_MASTER_URI=http://slict:11311
-      command: stdbuf -o L roscore
-      networks:
-        - ros
-      restart: always
-
+    image: slictdocker:latest
+    container_name: slict
+    environment:
+      - ROS_HOSTNAME=slict
+      - ROS_MASTER_URI=http://slict:11311
+      - DISPLAY=${DISPLAY}  # Pass X11 display
+      - QT_X11_NO_MITSHM=1  # Prevent shared memory issues in Qt apps
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw  # Share X11 socket
+    command: stdbuf -o L roscore
+    networks:
+      - ros
+    restart: always
 
   ros_bridge:
     image: bridge-slict     
@@ -28,10 +31,10 @@ services:
         source: /home/tim/Documents/slict-docker/topics.yaml
         target: /app/setup/topics_config.yaml
       - type: bind
-        source: /home/tim/Documents/slict-docker/data
+        source: /media/tim/T7 Shield/robot-AA/Scenario-1/scenario1_take_1
         target: /root/data
     #command: /bin/bash -c '. /opt/ros/foxy/setup.bash && . /opt/ros/noetic/setup.bash  &&. /ROS2/install/setup.bash && . /ROS1/devel/setup.bash && . /bridge_ws/install/setup.bash && ros2 run ros1_bridge dynamic_bridge --bridge-all-topics' #&& ros2 run ros1_bridge dynamic_bridge --bridge-all-topics
-    command: /bin/bash -c '. /opt/ros/foxy/setup.bash && . /ROS2/install/setup.bash && ros2 bag play /root/data/rosbag2_2025_01_21-16_24_56 --loop' #&& ros2 run ros1_bridge dynamic_bridge --bridge-all-topics
+    command: /bin/bash -c '. /opt/ros/foxy/setup.bash && . /ROS2/install/setup.bash && ros2 bag play /root/data --loop' #&& ros2 run ros1_bridge dynamic_bridge --bridge-all-topics
     #command: /bin/bash -c '. /opt/ros/noetic/setup.bash && . /opt/ros/foxy/setup.bash && . /ws_slam/devel/setup.bash  && . /ws_slam_ros2/install/setup.bash && ros2 bag play /root/data/rosbag2_2025_01_21-16_24_56 --loop' #&& ros2 run ros1_bridge dynamic_bridge --bridge-all-topics
     #command: /bin/bash -c '. /opt/ros/noetic/setup.bash && . /opt/ros/foxy/setup.bash && . /ws_slam/devel/setup.bash  && . /ws_slam_ros2/install/setup.bash && ros2 run simple_bridge_2_to_1 parameter_bridge '
     networks:
