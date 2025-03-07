@@ -1,20 +1,4 @@
 #!/bin/bash
+docker-compose up -d
 
-# List of container names to remove
-containers=("slictdocker")
-DOCKER_IMG=slictdocker
-
-# Loop through each container name and remove it
-for container in "${containers[@]}"; do
-    docker rm -f "$container"
-done
-
-docker run \
-        -it \
-        --rm \
-        --net=host \
-        -v ./data:/root/dataset/ \
-        -e USER=root \
-        $DOCKER_IMG \
-        bash
-
+docker exec ros1_bridge /bin/bash -c '. /opt/ros/foxy/setup.bash && . /opt/ros/noetic/setup.bash  &&. /ROS2/install/setup.bash && . /ROS1/devel/setup.bash && . /bridge_ws/install/setup.bash && ros2 run ros1_bridge dynamic_bridge --bridge-all-topics'
