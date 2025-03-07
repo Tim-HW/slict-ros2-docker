@@ -76,6 +76,8 @@ RUN cd /ws_slam/src/livox_ros_driver2 && mv package_ROS1.xml package.xml
 RUN /bin/bash -c 'source /opt/ros/noetic/setup.bash && cd ws_slam && catkin_make -DROS_EDITION=ROS1 -DCMAKE_POLICY_VERSION_MINIMUM=3.5'
 # Clone the SLAM repo
 RUN git clone https://github.com/brytsknguyen/slict.git /ws_slam/src/slict
+# Copy the launch frile for our dataset
+COPY run_slam.launch /ws_slam/src/slict/launch/run_slam.launch
 # Build it along with all the other packages
 RUN /bin/bash -c 'source /opt/ros/noetic/setup.bash && cd ws_slam && catkin_make -j1'
 
