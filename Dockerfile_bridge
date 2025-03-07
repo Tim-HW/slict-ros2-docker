@@ -26,7 +26,7 @@ make install
 
 
 # Get all the packages
-RUN git clone https://github.com/Livox-SDK/livox_ros_driver2.git /ROS1/src/livox_ros_driver2   
+COPY livox_ros_driver2  /ROS1/src/livox_ros_driver2   
 # Change the packages.xml from this repo to match ROS1
 RUN cd /ROS1/src/livox_ros_driver2 && mv package_ROS1.xml package.xml
 # Build it with all the necessary arguments
@@ -35,9 +35,13 @@ RUN /bin/bash -c 'source /opt/ros/noetic/setup.bash && cd ROS1 && catkin_make -D
 # Install dependancy
 RUN apt install ros-foxy-pcl-ros ros-foxy-tf2-sensor-msgs ros-foxy-image-transport ros-foxy-cv-bridge -y 
 # Get all the packages
-RUN git clone https://github.com/Livox-SDK/livox_ros_driver2.git /ROS2/src/livox_ros_driver2   
+COPY livox_ros_driver2  /ROS2/src/livox_ros_driver2    
 # Change the packages.xml from this repo to match ROS1
 RUN cd /ROS2/src/livox_ros_driver2 && mv package_ROS2.xml package.xml
 # Build it with all the necessary xarguments
 RUN /bin/bash -c 'source /opt/ros/foxy/setup.bash && cd ROS2 && colcon build --cmake-args -DROS_EDITION=ROS2 '
+COPY livox_ros_driver2/my_mapping_rules.yaml /ROS2/install/livox_ros_driver2/share/livox_ros_driver2/my_mapping_rules.yaml
 
+
+RUN git clone -b foxy https://github.com/ros2/ros1_bridge.git /bridge_ws/src/ros1_bridge
+RUN /bin/bash -c 'source /opt/ros/foxy/setup.bash && source /opt/ros/noetic/setup.bash && source /ROS1/devel/setup.bash && source /ROS2/install/setup.bash && cd bridge_ws && colcon build --cmake-force-configure'

@@ -30,6 +30,7 @@ services:
       - type: bind
         source: /home/tim/Documents/slict-docker/data
         target: /root/data
+    #command: /bin/bash -c '. /opt/ros/foxy/setup.bash && . /opt/ros/noetic/setup.bash  &&. /ROS2/install/setup.bash && . /ROS1/devel/setup.bash && . /bridge_ws/install/setup.bash && ros2 run ros1_bridge dynamic_bridge --bridge-all-topics' #&& ros2 run ros1_bridge dynamic_bridge --bridge-all-topics
     command: /bin/bash -c '. /opt/ros/foxy/setup.bash && . /ROS2/install/setup.bash && ros2 bag play /root/data/rosbag2_2025_01_21-16_24_56 --loop' #&& ros2 run ros1_bridge dynamic_bridge --bridge-all-topics
     #command: /bin/bash -c '. /opt/ros/noetic/setup.bash && . /opt/ros/foxy/setup.bash && . /ws_slam/devel/setup.bash  && . /ws_slam_ros2/install/setup.bash && ros2 bag play /root/data/rosbag2_2025_01_21-16_24_56 --loop' #&& ros2 run ros1_bridge dynamic_bridge --bridge-all-topics
     #command: /bin/bash -c '. /opt/ros/noetic/setup.bash && . /opt/ros/foxy/setup.bash && . /ws_slam/devel/setup.bash  && . /ws_slam_ros2/install/setup.bash && ros2 run simple_bridge_2_to_1 parameter_bridge '
