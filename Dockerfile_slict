@@ -78,7 +78,9 @@ RUN /bin/bash -c 'source /opt/ros/noetic/setup.bash && cd ws_slam && catkin_make
 RUN git clone https://github.com/brytsknguyen/slict.git /ws_slam/src/slict
 # Build it along with all the other packages
 RUN /bin/bash -c 'source /opt/ros/noetic/setup.bash && cd ws_slam && catkin_make -j1'
-# Copy the launch frile for our dataset
-COPY run_slam.launch /ws_slam/src/slict/launch/run_slam.launch
+# Copy the launch file for our dataset
+COPY em2c.launch /ws_slam/src/slict/launch/em2c.launch
+# Copy the config file for our dataset
+COPY em2c.yaml /ws_slam/src/slict/config/em2c.yml
 
 RUN apt update --fix-missing && apt install ros-noetic-rviz -y

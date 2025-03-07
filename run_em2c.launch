@@ -9,7 +9,7 @@
 
 
       <!-- Chose the config file based on the sequence names -->
-      <arg name="config_file" value="$(find slict)/config/blocks2.yaml"/>
+      <arg name="config_file" value="$(find slict)/config/em2c.yaml"/>
 
       <!-- Directory to log the bundle adjustment poses, pointclouds, and others-->
       <arg name="exp_log_dir" default="/root/slict_logs/blocks2"/>
