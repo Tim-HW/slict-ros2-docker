@@ -21,7 +21,7 @@ services:
     restart: always
 
   ros_bridge:
-    image: bridge-slict     
+    image: slict-bridge   
     container_name: ros1_bridge
     environment:
       - ROS_MASTER_URI=http://slict:11311
@@ -31,10 +31,9 @@ services:
         source: /home/tim/Documents/slict-docker/topics.yaml
         target: /app/setup/topics_config.yaml
       - type: bind
-        source: /media/tim/T7 Shield/robot-AA/Scenario-1/scenario1_take_1
+        source: "/media/dream/T7 Shield/robot-AA/Scenario-1/scenario1_take_1"
         target: /root/data
     command: /bin/bash -c '. /opt/ros/foxy/setup.bash && . /ROS2/install/setup.bash && ros2 bag play /root/data --loop' #&& ros2 run ros1_bridge dynamic_bridge --bridge-all-topics
-
     networks:
       - ros
 
