@@ -157,7 +157,7 @@ show_preop_times:   1
 show_lioop_times:   1
 
 # Log directory
-log_dir:            "/home/tmn/slict_log/blocks2"
+log_dir:            "/root/data"
 
 # Configurations for relocalization
 relocalization:

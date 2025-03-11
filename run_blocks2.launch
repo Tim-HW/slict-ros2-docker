@@ -2,17 +2,13 @@
 
       <arg name="publish_clock" default="--clock"/>
       <arg name="autorun" default="0"/>
-      <arg name="loop_en" default="0"/>
-
-      <!-- MCDVIRAL dataset, downloadable at mcdviral.github.io. -->
-      <arg name="data_path" default="/media/tmn/mySataSSD1/DATASETS/blocks2/"/>
-
+      <arg name="loop_en" default="1"/>
 
       <!-- Chose the config file based on the sequence names -->
-      <arg name="config_file" value="$(find slict)/config/em2c.yaml"/>
+      <arg name="config_file" value="$(find slict)/config/blocks2.yaml"/>
 
       <!-- Directory to log the bundle adjustment poses, pointclouds, and others-->
-      <arg name="exp_log_dir" default="/root/slict_logs/blocks2"/>
+      <arg name="exp_log_dir" default="/root"/>
 
      
       <!-- Load the param -->

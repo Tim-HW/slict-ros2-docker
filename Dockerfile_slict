@@ -77,9 +77,7 @@ RUN /bin/bash -c 'source /opt/ros/noetic/setup.bash && cd ws_slam && catkin_make
 # Clone the SLAM repo
 RUN git clone https://github.com/brytsknguyen/slict.git /ws_slam/src/slict
 # Copy the launch file for our dataset
-COPY run_em2c.launch /ws_slam/src/slict/launch/run_em2c.launch
-# Copy the config file for our dataset
-COPY em2c.yaml /ws_slam/src/slict/config/em2c.yaml
+
 # Build it along with all the other packages
 RUN /bin/bash -c 'source /opt/ros/noetic/setup.bash && cd ws_slam && catkin_make -j1'
 

@@ -14,8 +14,11 @@ services:
       - ROS_MASTER_URI=http://slict:11311
       - DISPLAY=${DISPLAY}  # Pass X11 display
       - QT_X11_NO_MITSHM=1  # Prevent shared memory issues in Qt apps
+
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw  # Share X11 socket
+      - .block2.yaml:/ws_slam/src/slict/config/block2.yaml
+      - .run_block2.launch:/ws_slam/src/slict/config/run_block2.launch
     command: stdbuf -o L roscore
     networks:
       - ros
