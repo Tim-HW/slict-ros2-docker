@@ -7,7 +7,7 @@ docker-compose up -d
 sleep 5
 
 # Start SLAM process inside the 'slict' container
-docker exec slict /bin/bash -c 'source /ws_slam/devel/setup.bash && roslaunch slict run_em2c.launch' &
+docker exec slict /bin/bash -c 'source /ws_slam/devel/setup.bash && roslaunch slict run_blocks2.launch' &
 
 # Start ROS1-ROS2 bridge inside the 'ros1_bridge' container
 docker exec ros1_bridge /bin/bash -c '. /opt/ros/foxy/setup.bash && \

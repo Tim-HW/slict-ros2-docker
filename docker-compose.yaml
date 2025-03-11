@@ -8,7 +8,7 @@ services:
   ros-master:
     image: slictdocker:latest
     container_name: slict
-    build: Dockerfile_slict
+
     environment:
       - ROS_HOSTNAME=slict
       - ROS_MASTER_URI=http://slict:11311
@@ -17,26 +17,33 @@ services:
 
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw  # Share X11 socket
-      - .block2.yaml:/ws_slam/src/slict/config/block2.yaml
-      - .run_block2.launch:/ws_slam/src/slict/config/run_block2.launch
+      - type: bind
+        source: ./blocks2.yaml
+        target: /ws_slam/src/slict/config/blocks2.yaml
+      - type: bind
+        source: ./run_blocks2.launch
+        target: /ws_slam/src/slict/launch/run_blocks2.launch
+      - type: bind
+        source: ./results
+        target: /root/results
     command: stdbuf -o L roscore
     networks:
       - ros
     restart: always
 
   ros_bridge:
-    image: slict-bridge   
+    image: bridge-slict 
     container_name: ros1_bridge
-    build: Dockerfile_bridge
+
     environment:
       - ROS_MASTER_URI=http://slict:11311
       - IGN_IP=slict
     volumes:
       - type: bind
-        source: /home/tim/Documents/slict-docker/topics.yaml
+        source: ./topics.yaml
         target: /app/setup/topics_config.yaml
       - type: bind
-        source: "/media/dream/T7 Shield/robot-AA/Scenario-1/scenario1_take_1"
+        source: "/media/tim/T7 Shield/robot-AA/Scenario-1/scenario1_take_1"
         target: /root/data
     command: /bin/bash -c '. /opt/ros/foxy/setup.bash && . /ROS2/install/setup.bash && ros2 bag play /root/data --loop' #&& ros2 run ros1_bridge dynamic_bridge --bridge-all-topics
     networks:

@@ -82,3 +82,8 @@ RUN git clone https://github.com/brytsknguyen/slict.git /ws_slam/src/slict
 RUN /bin/bash -c 'source /opt/ros/noetic/setup.bash && cd ws_slam && catkin_make -j1'
 
 RUN apt update --fix-missing && apt install ros-noetic-rviz -y
+
+
+COPY beginner_tutorials ros_ws/src/beginner_tutorials
+# Build it along with all the other packages
+RUN /bin/bash -c 'source /opt/ros/noetic/setup.bash && cd ros_ws && catkin_make -DCMAKE_POLICY_VERSION_MINIMUM=3.5'
