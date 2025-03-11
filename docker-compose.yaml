@@ -8,6 +8,7 @@ services:
   ros-master:
     image: slictdocker:latest
     container_name: slict
+    build: Dockerfile_slict
     environment:
       - ROS_HOSTNAME=slict
       - ROS_MASTER_URI=http://slict:11311
@@ -23,6 +24,7 @@ services:
   ros_bridge:
     image: slict-bridge   
     container_name: ros1_bridge
+    build: Dockerfile_bridge
     environment:
       - ROS_MASTER_URI=http://slict:11311
       - IGN_IP=slict

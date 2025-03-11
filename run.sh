@@ -1,5 +1,5 @@
 #!/bin/bash
-
+xhost +local:docker
 # Start Docker containers in detached mode
 docker-compose up -d
 
@@ -19,3 +19,17 @@ docker exec ros1_bridge /bin/bash -c '. /opt/ros/foxy/setup.bash && \
 
 # Wait for background processes to finish
 wait
+
+# List of container names to stop and remove
+container_names=("slict" "ros1_bridge")
+
+# Loop through each container name and stop/remove it
+for container_name in "${container_names[@]}"; do
+  echo "Stopping container $container_name..."
+  docker stop "$container_name"
+
+  echo "Removing container $container_name..."
+  docker rm "$container_name"
+done
+
+echo "All specified containers have been stopped and removed."
