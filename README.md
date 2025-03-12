@@ -9,3 +9,14 @@ chmod +x run.sh
 ```bash
 ./run.sh
 ```
+
+# Kill
+```bash
+chmod +x kill.sh
+```
+```bash
+./kill.sh
+```
+##Troublshoot
+You may have to change the rosbag path in the docker-compose.yaml
+Otherwise it should work
