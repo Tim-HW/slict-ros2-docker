@@ -16,7 +16,8 @@ docker exec ros1_bridge /bin/bash -c '. /opt/ros/foxy/setup.bash && \
                                      . /ROS1/devel/setup.bash && \
                                      . /bridge_ws/install/setup.bash && \
                                      ros2 run ros1_bridge dynamic_bridge --bridge-all-topics' &
-
+# Start ROS1-ROS2 bridge inside the 'ros1_bridge' container
+docker exec slict /bin/bash -c '. /ros_ws/devel/setup.bash && rosrun beginner_tutorials odom.py' &
 # Wait for background processes to finish
 wait
 

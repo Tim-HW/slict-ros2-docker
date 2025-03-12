@@ -134,7 +134,7 @@ dj_thres:           0.0     # Threshold to break the outer iterations early
 dx_thres:           0.5
 
 # Loop closure parameters
-loop_en:            1
+loop_en:            0
 loop_kf_nbr:        20    # Number of neighbour to check for loop closure
 loop_kfid_mindiff:  20    # Only check for loop when keyframes have this much difference
 

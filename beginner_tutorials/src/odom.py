@@ -9,12 +9,17 @@ class OdomSubscriber:
         self.subscriber = rospy.Subscriber('/opt_odom', Odometry, self.odom_callback)
         # Define the file path in the home directory
         self.file_path = os.path.expanduser("/root/results/slict.csv")
-        # Open the file in append mode to add new data without overwriting
-        self.file = open(self.file_path, mode='a', newline='')
+
+        # Remove the file if it already exists
+        if os.path.exists(self.file_path):
+            os.remove(self.file_path)
+
+        # Open the file in write mode to create a new empty file
+        self.file = open(self.file_path, mode='w', newline='')
         self.writer = csv.writer(self.file)
-        # Write the header if the file is empty
-        if os.stat(self.file_path).st_size == 0:
-            self.writer.writerow(["timestamp", "x", "y", "z", "ox", "oy", "oz", "ow"])
+
+        # Write the header
+        self.writer.writerow(["timestamp", "x", "y", "z", "ox", "oy", "oz", "ow"])
 
         # Register a shutdown hook to close the file
         rospy.on_shutdown(self.shutdown_hook)
@@ -33,8 +38,9 @@ class OdomSubscriber:
         try:
             # Write the data to the CSV file
             self.writer.writerow([timestamp, x, y, z, ox, oy, oz, ow])
-        except:
-            pass
+        except Exception as e:
+            rospy.logwarn(f"Error writing to file: {e}")
+
         # Print the data to the console
         rospy.loginfo(f"Timestamp: {timestamp}")
         rospy.loginfo(f"Position: x={x}, y={y}, z={z}")
