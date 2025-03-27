@@ -33,7 +33,7 @@ COPY livox_ros_driver2  /ROS1/src/livox_ros_driver2
 # Change the packages.xml from this repo to match ROS1
 RUN cd /ROS1/src/livox_ros_driver2 && mv package_ROS1.xml package.xml
 # Build it with all the necessary arguments
-RUN /bin/bash -c 'source /opt/ros/noetic/setup.bash && cd ROS1 && catkin_make -DROS_EDITION=ROS1 '
+RUN /bin/bash -c 'source /opt/ros/noetic/setup.bash && cd ROS1 && catkin_make -j1 -DROS_EDITION=ROS1 '
 
 # Install dependancy for livox ros drive for ROS2
 RUN apt install ros-foxy-pcl-ros ros-foxy-tf2-sensor-msgs ros-foxy-image-transport ros-foxy-cv-bridge -y 

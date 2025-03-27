@@ -83,7 +83,6 @@ RUN /bin/bash -c 'source /opt/ros/noetic/setup.bash && cd ws_slam && catkin_make
 
 RUN apt update --fix-missing && apt install ros-noetic-rviz -y
 
-
 COPY beginner_tutorials ros_ws/src/beginner_tutorials
 # Build it along with all the other packages
 RUN /bin/bash -c 'source /opt/ros/noetic/setup.bash && cd ros_ws && catkin_make -DCMAKE_POLICY_VERSION_MINIMUM=3.5'
